@@ -1,7 +1,7 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import cover from "@public/cover.png";
-import LoginForm from "@/app/auth/login/components/login-form";
+import LoginForm from "@/app/login/components/login-form";
 import Logo from "@/components/logo";
 
 export default function LoginPage() {

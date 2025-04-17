@@ -1,5 +1,6 @@
 "use client";
 
+import authApi from "@/apis/auth.api";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,8 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { errorCss, successCss } from "@/components/ui/sonner";
+import { useLocalStorage } from "@/hooks/local-storage-hook";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -29,6 +33,15 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+  const [, setAccessToken] = useLocalStorage<string>(
+    "access_token",
+    ""
+  );
+  const [, setRefreshToken] = useLocalStorage<string>(
+    "refresh_token",
+    ""
+  );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,12 +51,27 @@ export default function LoginForm() {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
+    const { email, password } = data;
+    try {
+      const response = await authApi.login({ email, password });
+      setAccessToken(response.accessToken);
+      setRefreshToken(response.refreshToken);
+      toast.success("Login successful", {
+        style: successCss,
+      });
+    } catch (err: Error | any) {
+      toast.error(err.message, {
+        style: errorCss,
+      });
+    }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full h-fit flex flex-col gap-10">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full h-fit flex flex-col gap-10"
+      >
         <FormField
           control={form.control}
           name="email"
@@ -57,7 +85,7 @@ export default function LoginForm() {
                   className="h-14 text-3xl px-4 py-7"
                 />
               </FormControl>
-              <FormMessage className="text-xl"/>
+              <FormMessage className="text-xl" />
             </FormItem>
           )}
         />
@@ -75,11 +103,14 @@ export default function LoginForm() {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-xl"/>
+              <FormMessage className="text-xl" />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full h-14 text-3xl px-4 py-7 mt-5 bg-yellow-500 hover:bg-yellow-600 text-white font-bold">
+        <Button
+          type="submit"
+          className="w-full h-14 text-3xl px-4 py-7 mt-5 bg-yellow-500 hover:bg-yellow-600 text-white font-bold"
+        >
           Login
         </Button>
       </form>
