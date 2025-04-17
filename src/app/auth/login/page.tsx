@@ -1,7 +1,6 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import cover from "@public/cover.png";
-import { Form } from "@/components/ui/form";
 import LoginForm from "@/app/auth/login/components/login-form";
 import Logo from "@/components/logo";
 
