@@ -11,7 +11,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "Tixflow Admin Centre",
-  description: "Admin Centre for Tixflow"
+  description: "Admin Centre for Tixflow",
 };
 
 export default function RootLayout({
@@ -21,8 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(`${roboto.variable}  antialiased`)}>{children}</body>
-      <Toaster position="top-right" duration={3000}/>
+      <body className={cn(`${roboto.variable}  antialiased`)}>
+        {children}
+        <Toaster position="top-right" duration={3000} />
+      </body>
     </html>
   );
 }
