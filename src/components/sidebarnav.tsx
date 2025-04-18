@@ -7,6 +7,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useUserContext } from "@/context/user.context";
@@ -22,7 +23,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function SidebarNav() {
-  const { user, logout } = useUserContext();
+  const { logout } = useUserContext();
   const pathname = usePathname();
   const links = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -36,10 +37,13 @@ export default function SidebarNav() {
     { href: "/dashboard/orders", label: "Order Management", icon: ShoppingBag },
   ];
   return (
-    <Sidebar className="w-sm">
+    <Sidebar className="bg-grey-100">
       <SidebarHeader className="border-b h-24">
         <div className="w-full h-full">
-          <Link href="/dashboard" className="w-full h-full grid place-items-center">
+          <Link
+            href="/dashboard"
+            className="w-full h-full grid place-items-center"
+          >
             <Logo classname="w-1/3 h-full" />
           </Link>
         </div>
@@ -49,12 +53,17 @@ export default function SidebarNav() {
           {links.map((link) => {
             const Icon = link.icon;
             return (
-              <SidebarMenuItem className={`menu-item ${pathname === link.href ? "active" : ""}`} key={link.href}>
+              <SidebarMenuItem
+                className={`menu-item px-4 py-2 ${
+                  pathname === link.href ? "active" : ""
+                }`}
+                key={link.href}
+              >
                 <Link
                   href={link.href}
-                  className="w-full h-fit p-4 flex flex-row items-center gap-4"
+                  className="w-full h-fit p-4 flex flex-row items-center gap-4 rounded-md hover:bg-yellow-300/50"
                 >
-                  <Icon className="w-10 h-10 text-yellow-500 relative" />
+                  <Icon className="w-8 h-8 text-yellow-500 relative" />
                   <span className="font-medium text-2xl">{link.label}</span>
                 </Link>
               </SidebarMenuItem>
