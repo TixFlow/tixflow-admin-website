@@ -51,8 +51,23 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     "refresh_token",
     ""
   );
+  const [isInitialized, setIsInitialized] = useState(false);
 
+  // First effect - initialize authentication state
   useEffect(() => {
+    // Wait for tokens to be loaded from localStorage
+    if (accessToken && refreshToken) {
+      setIsAuthenticated(true);
+    }
+    setIsInitialized(true);
+  }, [accessToken, refreshToken]);
+
+  // Second effect - handle authentication logic
+  useEffect(() => {
+    // Only run this effect after initialization
+    if (!isInitialized) return;
+
+    // Only verify user data when both tokens exist
     if (accessToken && refreshToken) {
       authApi
         .getMe()
@@ -63,8 +78,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
             )
           ) {
             setUser(user);
-            showToast("Login successful", "success");
-            router.push("/dashboard");
+            if (pathname === '/login') {
+              showToast("Login successful", "success");
+              router.push("/dashboard");
+            }
           } else {
             showToast(
               `User with role ${user.role} is not allowed to access this page`,
@@ -76,14 +93,17 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
-          setUser({} as User);
-          setIsAuthenticated(false);
+          logout();
+          if (pathname !== '/login') {
+            router.push("/login");
+          }
         });
-    } else {
-      logout();
+    } else if (pathname !== '/login') {
+      // Only redirect to login if we're not already there
       router.push("/login");
     }
-  }, [isAuthenticated, accessToken, refreshToken, pathname]);
+  }, [isInitialized, isAuthenticated]);
+
 
   const logout = () => {
     setUser({} as User);
