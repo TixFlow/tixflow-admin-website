@@ -13,7 +13,6 @@ class AuthApi {
       "/auth/login",
       body
     )) as ItemResponse<Token>;
-    console.log(response);
     if (response.status !== 200) {
       throw new Error(response.message);
     }
@@ -22,7 +21,6 @@ class AuthApi {
 
   async getMe(): Promise<User> {
     const response = (await this.http.get("/auth/me")) as ItemResponse<User>;
-    console.log(response);
     if (response.status !== 200) {
       throw new Error(response.message);
     }

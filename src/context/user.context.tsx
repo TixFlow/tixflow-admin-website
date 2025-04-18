@@ -52,9 +52,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   );
 
   useEffect(() => {
-    console.log("IsAuthenticated:", isAuthenticated);
-    console.log("AccessToken:", accessToken);
-    console.log("RefreshToken:", refreshToken);
     if (accessToken && refreshToken) {
       authApi
         .getMe()
@@ -68,7 +65,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
             showToast("Login successful", "success");
             router.push("/dashboard");
           } else {
-            console.log("User role not allowed:", user.role);
             showToast(
               `User with role ${user.role} is not allowed to access this page`,
               "error"
