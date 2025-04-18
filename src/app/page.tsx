@@ -1,7 +1,6 @@
-"use server";
+import PageLoading from "@/components/loading";
 
-import { redirect } from "next/navigation";
 
 export default async function Home() {
-  redirect("/login");
+  return <PageLoading />;
 }

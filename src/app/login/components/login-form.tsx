@@ -12,10 +12,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { errorCss, successCss } from "@/components/ui/sonner";
+import { useUserContext } from "@/context/user.context";
 import { useLocalStorage } from "@/hooks/local-storage-hook";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useContext } from "react";
+import { set, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -34,9 +36,8 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
-  const [, setAccessToken] = useLocalStorage<string>("access_token", "");
-  const [, setRefreshToken] = useLocalStorage<string>("refresh_token", "");
-  const router = useRouter();
+  const { setIsAuthenticated, setAccessToken, setRefreshToken } =
+    useUserContext();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,10 +53,7 @@ export default function LoginForm() {
       const response = await authApi.login({ email, password });
       setAccessToken(response.accessToken);
       setRefreshToken(response.refreshToken);
-      toast.success("Login successful", {
-        style: successCss,
-      });
-      router.push("/dashboard");
+      setIsAuthenticated(true);
     } catch (err: Error | any) {
       toast.error(err.message, {
         style: errorCss,

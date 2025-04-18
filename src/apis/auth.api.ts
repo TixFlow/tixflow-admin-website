@@ -1,5 +1,5 @@
 import http from "@/apis/http";
-import { ItemResponse, Token } from "@/models";
+import { ItemResponse, Token, User } from "@/models";
 import { AxiosInstance } from "axios";
 
 class AuthApi {
@@ -13,6 +13,15 @@ class AuthApi {
       "/auth/login",
       body
     )) as ItemResponse<Token>;
+    console.log(response);
+    if (response.status !== 200) {
+      throw new Error(response.message);
+    }
+    return response.data;
+  }
+
+  async getMe(): Promise<User> {
+    const response = (await this.http.get("/auth/me")) as ItemResponse<User>;
     console.log(response);
     if (response.status !== 200) {
       throw new Error(response.message);
