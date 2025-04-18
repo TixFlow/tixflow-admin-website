@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/context/user.context";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -24,8 +25,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(`${roboto.variable}  antialiased`)}>
         <UserProvider>
-          {children}
-          <Toaster position="top-right" duration={3000} />
+          <SidebarProvider>
+            {children}
+            <Toaster position="top-right" duration={3000} />
+          </SidebarProvider>
         </UserProvider>
       </body>
     </html>

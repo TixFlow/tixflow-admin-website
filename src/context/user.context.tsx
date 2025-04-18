@@ -4,7 +4,7 @@ import authApi from "@/apis/auth.api";
 import { useLocalStorage } from "@/hooks/local-storage-hook";
 import useToast from "@/hooks/toast";
 import { User, UserRole } from "@/models";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   createContext,
   useState,
@@ -38,6 +38,7 @@ interface UserProviderProps {
 }
 
 export const UserProvider = ({ children }: UserProviderProps) => {
+  const pathname = usePathname();
   const router = useRouter();
   const { showToast } = useToast();
   const [user, setUser] = useLocalStorage<User>("user", {} as User);
@@ -82,7 +83,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       logout();
       router.push("/login");
     }
-  }, [isAuthenticated, accessToken, refreshToken]);
+  }, [isAuthenticated, accessToken, refreshToken, pathname]);
 
   const logout = () => {
     setUser({} as User);
@@ -93,7 +94,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, isAuthenticated, setIsAuthenticated, logout , setAccessToken, setRefreshToken }}
+      value={{
+        user,
+        setUser,
+        isAuthenticated,
+        setIsAuthenticated,
+        logout,
+        setAccessToken,
+        setRefreshToken,
+      }}
     >
       {children}
     </UserContext.Provider>
