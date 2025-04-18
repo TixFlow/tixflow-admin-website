@@ -53,21 +53,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   );
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // First effect - initialize authentication state
   useEffect(() => {
-    // Wait for tokens to be loaded from localStorage
     if (accessToken && refreshToken) {
       setIsAuthenticated(true);
     }
     setIsInitialized(true);
   }, [accessToken, refreshToken]);
 
-  // Second effect - handle authentication logic
   useEffect(() => {
-    // Only run this effect after initialization
     if (!isInitialized) return;
 
-    // Only verify user data when both tokens exist
     if (accessToken && refreshToken) {
       authApi
         .getMe()
