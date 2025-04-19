@@ -61,7 +61,7 @@ export default function SidebarNav() {
               >
                 <Link
                   href={link.href}
-                  className="w-full h-fit p-4 flex flex-row items-center gap-4 rounded-md hover:bg-yellow-300/50"
+                  className="w-full h-fit p-4 flex flex-row items-center gap-4 rounded-md hover:bg-yellow-200/50"
                 >
                   <Icon className="w-8 h-8 text-yellow-500 relative" />
                   <span className="font-medium text-2xl">{link.label}</span>
@@ -73,10 +73,10 @@ export default function SidebarNav() {
       </SidebarContent>
       <SidebarFooter className="cursor-pointer border-t">
         <div
-          className="w-full h-fit p-6 text-red-500 flex flex-row items-center justify-center gap-4"
+          className="w-full h-fit p-6 text-red-500 flex flex-row items-center justify-center gap-4 hover:bg-destructive/10 rounded-md"
           onClick={logout}
         >
-          <LogOut className="w-10 h-10" />
+          <LogOut className="w-8 h-8" />
           <span className="font-medium text-2xl">Logout</span>
         </div>
       </SidebarFooter>

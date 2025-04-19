@@ -7,13 +7,11 @@ import { useUserContext } from "@/context/user.context";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronLeft, ChevronRight, CircleUser } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import Link from "next/link";
 
 export default function Header() {
   const { toggleSidebar, open } = useSidebar();
@@ -47,7 +45,6 @@ export default function Header() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="size-fit p-0">
               <DropdownMenuLabel className="font-medium text-2xl border-b p-2">{`${user.firstName} ${user.lastName}`}</DropdownMenuLabel>
-              
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
