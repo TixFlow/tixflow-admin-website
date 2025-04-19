@@ -42,7 +42,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const router = useRouter();
   const { showToast } = useToast();
   const [user, setUser] = useLocalStorage<User>("user", {} as User);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useLocalStorage<boolean>(
+    "isAuthenticated",
+    false
+  );
   const [accessToken, setAccessToken] = useLocalStorage<string>(
     "access_token",
     ""
@@ -73,7 +76,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
             )
           ) {
             setUser(user);
-            if (pathname === '/login') {
+            if (pathname === "/login") {
               showToast("Login successful", "success");
               router.push("/dashboard");
             }
@@ -89,16 +92,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         .catch((error) => {
           console.error("Error fetching user data:", error);
           logout();
-          if (pathname !== '/login') {
+          if (pathname !== "/login") {
             router.push("/login");
           }
         });
-    } else if (pathname !== '/login') {
+    } else if (pathname !== "/login") {
       // Only redirect to login if we're not already there
       router.push("/login");
     }
   }, [isInitialized, isAuthenticated]);
-
 
   const logout = () => {
     setUser({} as User);

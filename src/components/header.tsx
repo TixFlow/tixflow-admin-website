@@ -43,8 +43,8 @@ export default function Header() {
                 />
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="size-fit p-0">
-              <DropdownMenuLabel className="font-medium text-2xl border-b p-2">{`${user.firstName} ${user.lastName}`}</DropdownMenuLabel>
+            <DropdownMenuContent className="size-fit p-0 -translate-x-4">
+              <DropdownMenuLabel className="font-medium text-2xl border-b py-2 px-5">{`${user.firstName} ${user.lastName}`}</DropdownMenuLabel>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
