@@ -8,7 +8,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <SidebarNav />
       <div className="w-full h-full bg-gray-100 flex flex-col">
         <Header />
-        <main>{children}</main>
+        <main className="h-full">
+          <div className="w-[80%] min-h-full mx-auto">{children}</div>
+        </main>
       </div>
     </div>
   );
