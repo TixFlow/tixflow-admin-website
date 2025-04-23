@@ -18,7 +18,7 @@ export default function Header() {
   const { user } = useAuthContext();
   if (!user) return <></>;
   return (
-    <header className="h-24 border-b bg-grey-100 sticky top-0 z-10">
+    <header className="min-h-24 border-b bg-grey-100 sticky top-0 z-10">
       <div className="size-full flex flex-row items-center justify-between px-4">
         <Button
           variant="outline"

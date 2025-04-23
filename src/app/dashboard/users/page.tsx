@@ -1,4 +1,5 @@
 "use client";
+import PaginationNav from "@/components/pagination-nav";
 import { IListResponse, User } from "@/services/types";
 import { useState } from "react";
 
@@ -14,5 +15,5 @@ export default function UserDashboardPage() {
     setSize(newSize);
   };
 
-  return <></>;
+  return <PaginationNav page={page} setPage={handlePageChange} totalPages={10} totalSize={100} />;
 }
