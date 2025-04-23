@@ -7,13 +7,11 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuthContext } from "@/providers/auth.provider";
 import {
   CalendarRange,
-  LayoutDashboard,
   LogOut,
   ShoppingBag,
   Ticket,
