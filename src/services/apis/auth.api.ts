@@ -23,4 +23,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useGetMeQuery } = authApi;
+export const { useLoginMutation, useGetMeQuery, useLazyGetMeQuery } = authApi;

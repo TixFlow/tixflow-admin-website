@@ -1,6 +1,6 @@
 "use client";
 import { useToast } from "@/hooks";
-import { useGetMeQuery, useLoginMutation } from "@/services/apis/auth.api";
+import { useLazyGetMeQuery, useLoginMutation } from "@/services/apis";
 import { User, UserRole } from "@/services/types";
 import { ILoginRequest } from "@/services/types/auth.type";
 import {
@@ -11,6 +11,7 @@ import {
   setAccessToken,
   setRefreshToken,
 } from "@/utils";
+import { log } from "console";
 import { usePathname, useRouter } from "next/navigation";
 import {
   createContext,
@@ -55,18 +56,22 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     getRefreshToken()
   );
   const [user, setUser] = useState<User | null>(null);
-  const setTokens = (accessToken: string, refreshToken: string) => {
-    setAccessToken(accessToken);
-    setRefreshToken(refreshToken);
-    setCurrentAccessToken(accessToken);
-    setCurrentRefreshToken(refreshToken);
-  };
-  const clearTokens = () => {
+  const setTokens = useCallback(
+    (accessToken: string, refreshToken: string) => {
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+      setCurrentAccessToken(accessToken);
+      setCurrentRefreshToken(refreshToken);
+    },
+    [setAccessToken, setRefreshToken]
+  );
+
+  const clearTokens = useCallback(() => {
     removeAccessToken();
     removeRefreshToken();
     setCurrentAccessToken(null);
     setCurrentRefreshToken(null);
-  };
+  }, [removeAccessToken, removeRefreshToken]);
 
   const checkAuthRef = useRef(false);
 
@@ -98,50 +103,42 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     if (pathname !== "/login") {
       router.push("/login");
     }
-  }, [clearTokens]);
+  }, [clearTokens, pathname, router]);
 
-  const { data, isLoading, error } = useGetMeQuery();
+  const [getMeQuery] = useLazyGetMeQuery();
 
   useEffect(() => {
     if (checkAuthRef.current) return;
 
-    const checkAuth = () => {
+    const checkAuth = async () => {
       if (!currentAccessToken || !currentRefreshToken) {
         if (isAuthorized) logout();
         return;
       }
-
-      if (isLoading) return;
-      if (error) {
+      const { data, status, message} = await getMeQuery().unwrap();
+      if (status === 200) {
         checkAuthRef.current = true;
-        if (isAuthorized) logout();
-        return;
-      }
-      if (data) {
-        checkAuthRef.current = true;
-        if (data.status === 200) {
-          const user = data.data;
-          if ([UserRole.CUSTOMER, UserRole.EVENT_HOLDER].includes(user.role)) {
-            showToast("You are not authorized to access this page", "error");
-            logout();
-            return;
-          }
-          setUser(user);
-          setIsAuthorized(true);
-          if (!pathname.includes("/dashboard")){
-            router.push("/dashboard");
-          }
-        } else {
-          showToast(data.message || "An error occurred", "error");
+        if (data.role === UserRole.CUSTOMER || data.role === UserRole.EVENT_HOLDER){
+          showToast("You are not authorized to access this page", "error");
           logout();
+          return;
         }
+        setUser(data);
+        setIsAuthorized(true);  
+        if (!pathname.includes('/dashboard')) {
+          router.push("/dashboard");
+        }
+      }else {
+        showToast(message || "", "error");
+        logout();
+        return;
       }
     };
 
     if (currentAccessToken || isAuthorized) {
       checkAuth();
     }
-  }, [currentAccessToken, isAuthorized, error, user, data]);
+  }, [currentAccessToken, isAuthorized, user]);
 
   return (
     <AuthContext.Provider
