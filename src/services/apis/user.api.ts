@@ -1,5 +1,5 @@
 import { baseQueryWithRefreshToken } from "@/services/apis/base.api";
-import { IListResponse, User } from "@/services/types";
+import { IItemResponse, IListResponse, User } from "@/services/types";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const userApi = createApi({
@@ -15,7 +15,13 @@ export const userApi = createApi({
         method: "GET",
       }),
     }),
+    deleteUser: builder.mutation<IItemResponse<User>, { id: string }>({
+      query: ({ id }) => ({
+        url: `/users/${id}`,
+        method: "DELETE",
+      }),
+    })
   }),
 });
 
-export const { useLazyGetAllUsersQuery } = userApi;
+export const { useLazyGetAllUsersQuery, useDeleteUserMutation } = userApi;

@@ -1,3 +1,4 @@
+import DeleteUserDialog from "@/app/dashboard/users/components/delete-user-dialog";
 import { DataTable } from "@/components/data-table";
 import PaginationNav from "@/components/pagination-nav";
 import PickSize from "@/components/pick-size";
@@ -15,6 +16,7 @@ interface UserTableProps {
   setSize: (size: number) => void;
   setPage: (page: number) => void;
   setSearch: (search: string) => void;
+  setHaveChanges: (value: boolean) => void;
 }
 export default function UserTable({
   data,
@@ -24,6 +26,7 @@ export default function UserTable({
   setPage,
   setSize,
   setSearch,
+  setHaveChanges
 }: UserTableProps) {
   const columns: ColumnDef<User>[] = [
     {
@@ -71,13 +74,10 @@ export default function UserTable({
       header: () => <div className="text-center">Actions</div>,
       cell: ({ row }) => (
         <div className="flex items-center justify-center gap-3">
-          <Button
-            variant="destructive"
-            onClick={() => {}}
-            className="w-10 h-10"
-          >
-            <Eraser className="w-10 h-10" />
-          </Button>
+          <DeleteUserDialog
+            userId={row.original.id}
+            setHaveChanges={setHaveChanges}
+          />
         </div>
       ),
     },

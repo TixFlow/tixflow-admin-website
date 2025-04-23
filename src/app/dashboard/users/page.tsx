@@ -20,6 +20,7 @@ export default function UserDashboardPage() {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [search, setSearch] = useState("");
+  const [haveChanges, setHaveChanges] = useState(false);
   const [getAllUsers] = useLazyGetAllUsersQuery();
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function UserDashboardPage() {
       setSize(response.size);
     };
     fetchUsers();
-  }, [page, size, search, getAllUsers]);
+  }, [page, size, search, getAllUsers, haveChanges]);
 
   return (
     <div className="w-full">
@@ -106,6 +107,7 @@ export default function UserDashboardPage() {
             page={page}
             size={size}
             search={search}
+            setHaveChanges={setHaveChanges}
           />
         </CardContent>
       </Card>
