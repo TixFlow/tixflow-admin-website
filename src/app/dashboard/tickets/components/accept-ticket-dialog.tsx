@@ -6,33 +6,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useDeleteUserMutation } from "@/services/apis/user.api";
-import { Eraser } from "lucide-react";
+import { useUpdateTicketStatusMutation } from "@/services/apis/ticket.api";
+import { TicketStatus } from "@/services/types";
+import { Check, Eraser } from "lucide-react";
 import { useState } from "react";
 
 interface DeleteUserDialogProps {
-  userId: string;
+  ticketId: string;
   setHaveChanges: (value: boolean) => void;
 }
-export default function DeleteUserDialog({
-  userId,
+export default function AcceptTicketDialog({
+  ticketId,
   setHaveChanges,
 }: DeleteUserDialogProps) {
   const [open, setOpen] = useState(false);
-  const [deleteUser] = useDeleteUserMutation();
+  const [updateTicket] = useUpdateTicketStatusMutation();
   const handleDeleteUser = async () => {
     try {
-      await deleteUser({ id: userId }).unwrap();
+      await updateTicket({
+        id: ticketId,
+        status: TicketStatus.APPROVED,
+      }).unwrap();
       setHaveChanges(true);
       setOpen(false);
     } catch (error) {
-      console.error("Failed to delete user:", error);
+      console.error("Failed to delete ticket:", error);
     }
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className=" flex items-center p-2 justify-center bg-red-500 text-white rounded-md hover:bg-red-600/30 transition duration-200 ease-in-out">
-        <Eraser className="w-8 h-8" />
+      <DialogTrigger className=" flex items-center p-2 justify-center bg-green-500 text-white rounded-md hover:bg-green-600/30 transition duration-200 ease-in-out">
+        <Check className="w-8 h-8" />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -40,12 +44,12 @@ export default function DeleteUserDialog({
             Are you absolutely sure?
           </DialogTitle>
           <DialogDescription className="text-xl">
-            This action cannot be undone. Are you sure you want to permanently
-            delete this user from our servers?
+            This action cannot be undone. Are you sure you want to accept to
+            sell this ticket?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button type="submit" className="text-xl" onClick={handleDeleteUser} variant={"destructive"}>
+          <Button type="submit" className="text-xl" onClick={handleDeleteUser}>
             Confirm
           </Button>
         </DialogFooter>

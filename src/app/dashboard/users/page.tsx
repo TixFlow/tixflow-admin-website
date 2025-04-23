@@ -31,6 +31,7 @@ export default function UserDashboardPage() {
       setSize(response.size);
     };
     fetchUsers();
+    setHaveChanges(false);
   }, [page, size, search, getAllUsers, haveChanges]);
 
   return (

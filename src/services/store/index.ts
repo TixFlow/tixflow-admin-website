@@ -1,4 +1,5 @@
 import { authApi } from "@/services/apis/auth.api";
+import { ticketApi } from "@/services/apis/ticket.api";
 import { userApi } from "@/services/apis/user.api";
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
@@ -7,9 +8,14 @@ export const makeStore = () => {
     reducer: {
       [authApi.reducerPath]: authApi.reducer,
       [userApi.reducerPath]: userApi.reducer,
+      [ticketApi.reducerPath]: ticketApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(authApi.middleware, userApi.middleware),
+      getDefaultMiddleware().concat(
+        authApi.middleware,
+        userApi.middleware,
+        ticketApi.middleware
+      ),
   });
 };
 

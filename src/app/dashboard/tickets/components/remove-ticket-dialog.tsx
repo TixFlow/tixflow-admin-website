@@ -6,27 +6,27 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useDeleteUserMutation } from "@/services/apis/user.api";
+import { useDeleteTicketMutation } from "@/services/apis/ticket.api";
 import { Eraser } from "lucide-react";
 import { useState } from "react";
 
 interface DeleteUserDialogProps {
-  userId: string;
+  ticketId: string;
   setHaveChanges: (value: boolean) => void;
 }
-export default function DeleteUserDialog({
-  userId,
+export default function RemoveTicketDialog({
+  ticketId,
   setHaveChanges,
 }: DeleteUserDialogProps) {
   const [open, setOpen] = useState(false);
-  const [deleteUser] = useDeleteUserMutation();
+  const [deleteTicket] = useDeleteTicketMutation();
   const handleDeleteUser = async () => {
     try {
-      await deleteUser({ id: userId }).unwrap();
+      await deleteTicket({ id: ticketId }).unwrap();
       setHaveChanges(true);
       setOpen(false);
     } catch (error) {
-      console.error("Failed to delete user:", error);
+      console.error("Failed to delete ticket:", error);
     }
   };
   return (
@@ -40,8 +40,8 @@ export default function DeleteUserDialog({
             Are you absolutely sure?
           </DialogTitle>
           <DialogDescription className="text-xl">
-            This action cannot be undone. Are you sure you want to permanently
-            delete this user from our servers?
+            This action cannot be undone. Are you sure you want to removed this
+            ticket?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
