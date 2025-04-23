@@ -1,6 +1,5 @@
 "use client";
 
-import authApi from "@/apis/auth.api";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,12 +11,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { errorCss, successCss } from "@/components/ui/sonner";
-import { useUserContext } from "@/context/user.context";
-import { useLocalStorage } from "@/hooks/local-storage-hook";
+import { useAuthContext } from "@/providers/auth.provider";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useContext } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -36,9 +32,6 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
-  const { setIsAuthenticated, setAccessToken, setRefreshToken } =
-    useUserContext();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,19 +39,11 @@ export default function LoginForm() {
       password: "",
     },
   });
+  const { login } = useAuthContext();
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     const { email, password } = data;
-    try {
-      const response = await authApi.login({ email, password });
-      setAccessToken(response.accessToken);
-      setRefreshToken(response.refreshToken);
-      setIsAuthenticated(true);
-    } catch (err: Error | any) {
-      toast.error(err.message, {
-        style: errorCss,
-      });
-    }
+    login({ email, password })
   }
 
   return (

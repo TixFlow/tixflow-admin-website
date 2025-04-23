@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useUserContext } from "@/context/user.context";
+import { useAuthContext } from "@/providers/auth.provider";
 import {
   CalendarRange,
   LayoutDashboard,
@@ -23,7 +23,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function SidebarNav() {
-  const { logout } = useUserContext();
+  const { logout } = useAuthContext();
   const pathname = usePathname();
   const links = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },

@@ -3,7 +3,6 @@
 import { UserAvatar } from "@/components/avatar";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
-import { useUserContext } from "@/context/user.context";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useAuthContext } from "@/providers/auth.provider";
 
 
 export default function Header() {
   const { toggleSidebar, open } = useSidebar();
-  const { user } = useUserContext();
+  const { user } = useAuthContext();
+  if (!user) return <></>;
   return (
     <header className="h-24 border-b bg-grey-100 sticky top-0 z-10">
       <div className="size-full flex flex-row items-center justify-between px-4">

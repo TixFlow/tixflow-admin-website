@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <div className="w-full h-full bg-gray-100 flex flex-col">
         <Header />
         <main className="h-full">
-          <div className="w-[80%] min-h-full mx-auto">{children}</div>
+          <div className="w-[80%] min-h-full mx-auto p-5">{children}</div>
         </main>
       </div>
     </div>
