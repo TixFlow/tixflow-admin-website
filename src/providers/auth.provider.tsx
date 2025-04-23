@@ -82,7 +82,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         if (status === 200) {
           const { accessToken, refreshToken } = data;
           setTokens(accessToken, refreshToken);
-          showToast("Login successful", "success");
           setIsAuthorized(true);
           checkAuthRef.current = false;
         } else {
@@ -125,6 +124,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         }
         setUser(data);
         setIsAuthorized(true);  
+        showToast("Login successful", "success");
         if (!pathname.includes('/dashboard')) {
           router.push("/dashboard");
         }
