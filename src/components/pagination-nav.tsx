@@ -12,14 +12,12 @@ interface PaginationNavProps {
   page: number;
   setPage: (value: number) => void;
   totalPages: number;
-  totalSize: number;
 }
 
 export default function PaginationNav({
   page,
   setPage,
   totalPages,
-  totalSize,
 }: PaginationNavProps) {
   return (
     <div className="container mx-auto py-5">
@@ -39,11 +37,15 @@ export default function PaginationNav({
               <ChevronLeft className="h-10 w-10" />
             </Button>
           </PaginationItem>
-              <PaginationItem className="w-fit h-full">
-                <Button variant="outline" disabled className="w-fit h-full text-2xl">
-                  {page} / {totalPages}
-                </Button>
-              </PaginationItem>
+          <PaginationItem className="w-fit h-full">
+            <Button
+              variant="outline"
+              disabled
+              className="w-fit h-full text-2xl"
+            >
+              {page} / {totalPages}
+            </Button>
+          </PaginationItem>
           <PaginationItem>
             <Button
               className="h-14 w-14"

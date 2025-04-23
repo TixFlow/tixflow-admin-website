@@ -21,12 +21,12 @@ export default function PickSize({
 }: PickSizeProps) {
   return (
     <Select value={`${size}`} onValueChange={(value) => setSize(Number(value))}>
-      <SelectTrigger className={cn("w-20", className)}>
-        <SelectValue placeholder={size} />
+      <SelectTrigger className={cn("w-20 bg-white min-h-12 max-h-12", className)}>
+        <SelectValue placeholder={size} className="h-12"/>
       </SelectTrigger>
-      <SelectContent side={side}>
+      <SelectContent side={side} className="max-w-20 min-w-20">
         {[10, 15, 20, 25, 30].map((value) => (
-          <SelectItem key={value} value={`${value}`}>
+          <SelectItem key={value} value={`${value}`} className={cn("w-20", className)}>
             {value}
           </SelectItem>
         ))}
