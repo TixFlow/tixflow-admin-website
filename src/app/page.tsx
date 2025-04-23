@@ -1,13 +1,7 @@
-"use client";
-import PageLoading from "@/components/loading";
-import { useRouter } from "next/navigation";
-import { Suspense, useEffect } from "react";
+"use server";
 
-export default function Home() {
-  const router = useRouter();
+import { redirect } from "next/navigation";
 
-  useEffect(() => {
-    router.push("/login");
-  }, [router]);
-  return <Suspense fallback={<PageLoading />}></Suspense>;
+export default async function Home() {
+  redirect("/login");
 }

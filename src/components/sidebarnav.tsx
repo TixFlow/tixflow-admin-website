@@ -26,7 +26,6 @@ export default function SidebarNav() {
   const { logout } = useAuthContext();
   const pathname = usePathname();
   const links = [
-    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/dashboard/users", label: "User Management", icon: Users },
     { href: "/dashboard/tickets", label: "Ticket Management", icon: Ticket },
     {

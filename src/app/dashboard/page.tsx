@@ -2,6 +2,6 @@
 
 import { redirect } from "next/navigation";
 
-export default function BashboardHomePape() {
+export default async function BashboardHomePape() {
   redirect("/dashboard/users");
 }
